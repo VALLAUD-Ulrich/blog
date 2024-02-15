@@ -8,7 +8,7 @@ create domain "email" as text CHECK(
 create table if not exists "roles" (
     "id" int GENERATED always AS IDENTITY PRIMARY KEY,
     "label" varchar(255) not null,
-    "created_at" timestamptz,
+    "created_at" timestamptz not null default now(),
     "updated_at" timestamptz
 );
 
@@ -19,7 +19,7 @@ create table if not exists "users" (
     "email" email not null,
     "password" varchar(60) not null,
     "role_id" int not null references roles(id) on delete cascade,
-    "created_at" timestamptz,
+    "created_at" timestamptz not null default now(),
     "updated_at" timestamptz
 
 );
@@ -28,21 +28,21 @@ create table if not exists "articles" (
     "title" varchar(255) not null,
     "content" text not null,
     "users_id" int not null references users(id) on delete cascade,
-    "created_at" timestamptz,
+    "created_at" timestamptz not null default now(),
     "updated_at" timestamptz
 );
 create table if not exists "categories" (
     "id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "label" varchar(255) not null,
     "articles_id" int not null references articles(id) on delete cascade,
-    "created_at" timestamptz,
+    "created_at" timestamptz not null default now(),
     "updated_at" timestamptz
 );
 create table if not exists "articles_to_categories" (
     "id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "articles_id" int not null references articles(id) on delete cascade,
     "categories_id" int not null references categories(id) on delete cascade,
-    "created_at" timestamptz,
+    "created_at" timestamptz not null default now(),
     "updated_at" timestamptz
 );
 
@@ -51,7 +51,7 @@ create table if not exists "comments" (
     "articles_id" int not null,
     "users_id" int not null,
     "content" text not null,
-    "created_at" timestamptz,
+    "created_at" timestamptz not null default now(),
     "updated_at" timestamptz
 );
 
