@@ -4,17 +4,8 @@ const usersController = {
   async create(req, res) {
     try {
       const user = req.body;
-      console.log(user);
       const userCreate = await Users.create(user);
       res.status(201).json(userCreate);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  },
-  async findOneByEmail(req, res) {
-    try {
-      const user = await Users.findOneByEmail(req.params.email);
-      res.status(200).json(user);
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
@@ -30,7 +21,8 @@ const usersController = {
   },
   async findUserByRole(req, res) {
     try {
-      const user = await Users.findUserByRole(req.params.id);
+      const user = await Users.findUserByRole(req.params.role_id);
+      console.log(user);
       res.status(200).json(user);
     } catch (error) {
       res.status(400).json({ error: error.message });

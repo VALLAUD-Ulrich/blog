@@ -22,28 +22,30 @@ class User {
     const result = await client.query("SELECT * FROM users WHERE email = $1", [
       email,
     ]);
-    return result.rows[0] ? new User(result.rows[0]) : null;
+    if (result.rows.lenght > 0) {
+      return new User(result.rows[0]);
+    }
+    return null;
   }
 
   static async findAll() {
     const result = await client.query("SELECT * FROM users");
-    console.log(result.rows);
     return result.rows;
   }
 
-  static async findUserByRole(id) {
+  static async findUserByRole(role_id) {
     const result = await client.query(
-      "SELECT roles.label , users.firstname from users join roles on roles.id = users.role_id where users.id=1)",
-      [id]
+      "SELECT roles.label , users.* from users join roles on roles.id = users.role_id where users.role_id=$1",
+      [role_id]
     );
+    console.log(result);
     return result.rows;
-    console.log(result.rows);
   }
 
-  static async update(id, obj) {
+  static async update(firstname, lastname, email, password, role_id, id) {
     const result = await client.query(
       "UPDATE users SET firstname = $1, lastname = $2, email = $3, password = $4, role = $5 WHERE id = $6 RETURNING *",
-      [obj.firstname, obj.lastname, obj.email, obj.password, obj.role, id]
+      [firstname, lastname, email, password, role_id, id]
     );
     return new User(result.rows[0]);
   }
