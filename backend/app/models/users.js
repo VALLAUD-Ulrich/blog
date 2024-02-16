@@ -42,17 +42,17 @@ class User {
     return result.rows;
   }
 
-  static async update(firstname, lastname, email, password, role_id, id) {
+  static async update(firstname, lastname, email, id) {
     const result = await client.query(
-      "UPDATE users SET firstname = $1, lastname = $2, email = $3, password = $4, role = $5 WHERE id = $6 RETURNING *",
-      [firstname, lastname, email, password, role_id, id]
+      "UPDATE users SET firstname = $1, lastname = $2, email = $3 WHERE id = $4 RETURNING *",
+      [firstname, lastname, email, id]
     );
     return new User(result.rows[0]);
   }
 
   static async delete(id) {
     const result = await client.query("DELETE FROM users WHERE id = $1", [id]);
-    return result.rowCount;
+    return result.rows[0];
   }
 }
 

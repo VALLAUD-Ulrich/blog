@@ -5,15 +5,14 @@ const usersController = {
     try {
       const user = req.body;
       const userCreate = await Users.create(user);
-      res.status(201).json(userCreate);
+      res.status(200).json(userCreate);
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
   },
-  async findAll(req, res) {
+  async findAll(_req, res) {
     try {
       const users = await Users.findAll();
-      console.log(users);
       res.status(200).json(users);
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -30,16 +29,21 @@ const usersController = {
   },
   async update(req, res) {
     try {
-      const user = await Users.update(req.params.id, req.body);
-      res.status(200).json(user);
+      const userUpdate = await Users.update(
+        req.body.firstname,
+        req.body.lastname,
+        req.body.email,
+        req.params.id
+      );
+      res.status(200).json({ message: "User updated", userUpdate });
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
   },
   async delete(req, res) {
     try {
-      const user = await Users.delete(req.params.id);
-      res.status(200).json(user);
+      await Users.delete(req.params.id);
+      res.status(200).json({ message: "User deleted" });
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
