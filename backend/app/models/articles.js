@@ -6,6 +6,8 @@ class Article {
     this.title = obj.title;
     this.content = obj.content;
     this.users_id = obj.users_id;
+    this.created_at = obj.created_at;
+    this.updated_at = obj.updated_at;
   }
 
   static async create({ title, content, users_id }) {
@@ -19,7 +21,7 @@ class Article {
   // get all articles
   static async findAll() {
     const result = await client.query("SELECT * FROM articles");
-    return result.rows;
+    return result;
   }
 
   static async findOneById(id) {

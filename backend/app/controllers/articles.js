@@ -11,6 +11,8 @@ const articlesController = {
       res.status(400).json({ error: error.message });
     }
   },
+
+  //! bug
   async findAll(_req, res) {
     try {
       const articles = await Article.findAll();
@@ -19,6 +21,8 @@ const articlesController = {
       res.status(400).json({ error: error.message });
     }
   },
+  //! bug
+
   // get by categories
 
   async findOneById(req, res) {
