@@ -1,59 +1,53 @@
-const client = require("../database/pg");
+// Dans le dossier "model/users.js"
+const { DataTypes } = require("sequelize");
+const sequelize = require("../database/sequelize");
 
-class User {
-  constructor(obj) {
-    this.id = obj.id;
-    this.firstname = obj.firstname;
-    this.lastname = obj.lastname;
-    this.email = obj.email;
-    this.password = obj.password;
-    this.role_id = obj.role_id;
+const User = sequelize.define(
+  "User",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    firstname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    lastname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true,
+      },
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    role_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+  },
+  {
+    tableName: "users",
+    timestamps: false,
   }
-
-  static async create({ firstname, lastname, email, password }) {
-    const result = await client.query(
-      "INSERT INTO users (firstname, lastname, email, password, role_id) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-      [firstname, lastname, email, password, 2]
-    );
-    return new User(result.rows[0]);
-  }
-
-  static async findOneByEmail(email) {
-    const result = await client.query("SELECT * FROM users WHERE email = $1", [
-      email,
-    ]);
-    if (result.rows.lenght > 0) {
-      return new User(result.rows[0]);
-    }
-    return null;
-  }
-
-  static async findAll() {
-    const result = await client.query("SELECT * FROM users");
-    return result.rows;
-  }
-
-  static async findUserByRole(role_id) {
-    const result = await client.query(
-      "SELECT roles.label , users.* from users join roles on roles.id = users.role_id where users.role_id=$1",
-      [role_id]
-    );
-    console.log(result);
-    return result.rows;
-  }
-
-  static async update(firstname, lastname, email, id) {
-    const result = await client.query(
-      "UPDATE users SET firstname = $1, lastname = $2, email = $3 WHERE id = $4 RETURNING *",
-      [firstname, lastname, email, id]
-    );
-    return new User(result.rows[0]);
-  }
-
-  static async delete(id) {
-    const result = await client.query("DELETE FROM users WHERE id = $1", [id]);
-    return result.rows[0];
-  }
-}
+);
 
 module.exports = User;

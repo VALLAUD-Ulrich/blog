@@ -1,25 +1,21 @@
-// Dans le fichier "models/articles.js"
+// Dans le fichier "models/articles_to_categories.js"
 
 const { DataTypes } = require("sequelize");
-const sequelize = require("../database/sequelize");
+const sequelize = require("../database/pg");
 
-const Article = sequelize.define(
-  "Article",
+const ArticleToCategory = sequelize.define(
+  "ArticleToCategory",
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    title: {
-      type: DataTypes.STRING,
+    articles_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
-    content: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    users_id: {
+    categories_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -34,9 +30,9 @@ const Article = sequelize.define(
     },
   },
   {
-    tableName: "articles",
+    tableName: "articles_to_categories",
     timestamps: false,
   }
 );
 
-module.exports = Article;
+module.exports = ArticleToCategory;

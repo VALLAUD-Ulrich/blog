@@ -32,9 +32,8 @@ create table if not exists "articles" (
     "updated_at" timestamptz
 );
 create table if not exists "categories" (
-    "id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "label" varchar(255) not null,
-    "articles_id" int not null references articles(id) on delete cascade,
     "created_at" timestamptz not null default now(),
     "updated_at" timestamptz
 );

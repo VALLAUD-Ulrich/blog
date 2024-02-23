@@ -1,26 +1,18 @@
-// Dans le fichier "models/articles.js"
+// Dans le fichier "models/roles.js"
 
 const { DataTypes } = require("sequelize");
 const sequelize = require("../database/sequelize");
 
-const Article = sequelize.define(
-  "Article",
+const Role = sequelize.define(
+  "Role",
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    title: {
+    label: {
       type: DataTypes.STRING,
-      allowNull: false,
-    },
-    content: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    users_id: {
-      type: DataTypes.INTEGER,
       allowNull: false,
     },
     created_at: {
@@ -34,9 +26,9 @@ const Article = sequelize.define(
     },
   },
   {
-    tableName: "articles",
+    tableName: "roles",
     timestamps: false,
   }
 );
 
-module.exports = Article;
+module.exports = Role;
